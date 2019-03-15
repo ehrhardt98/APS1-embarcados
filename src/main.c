@@ -11,6 +11,9 @@
  *
  * Material :
  *  - Kit: ATMEL SAME70-XPLD - ARM CORTEX M7
+ *
+ * Dupla:
+ *  - Iago Mendes e Jorge Augusto
  */
 
 /************************************************************************/
@@ -176,31 +179,13 @@ void but1_callback(void){
 }
 
 void but2_callback(void){
+	flag = false;
 	musica++;
 	if (musica == 3) musica = 0;
 }
 /************************************************************************/
 /* funcoes                                                              */
 /************************************************************************/
-
-void buzz(int freq, int len) {
-	pio_set(BUZ_PIO, BUZ_PIO_IDX_MASK);
-	
-	int delay = 1000000 / freq / 2;
-	
-	int ciclos = freq * len / 1000;
-	
-	for (int i = 0; i < ciclos; i++) {
-		pio_set(BUZ_PIO, BUZ_PIO_IDX_MASK);
-		pio_clear(LED_PIO, LED_PIO_IDX_MASK);
-		delay_us(delay);
-		pio_clear(BUZ_PIO, BUZ_PIO_IDX_MASK);
-		pio_set(LED_PIO, LED_PIO_IDX_MASK);
-		delay_us(delay);
-	}
-	
-	pio_clear(BUZ_PIO, BUZ_PIO_IDX_MASK);
-}
 
 // Função de inicialização do uC
 void init(void)
@@ -257,6 +242,25 @@ void init(void)
 	NVIC_SetPriority(BUT2_PIO_ID, 4); // Prioridade 4
 }
 
+void buzz(int freq, int len) {
+	pio_set(BUZ_PIO, BUZ_PIO_IDX_MASK);
+	
+	int delay = 1000000 / freq / 2;
+	
+	int ciclos = freq * len / 1000;
+	
+	for (int i = 0; i < ciclos; i++) {
+		pio_set(BUZ_PIO, BUZ_PIO_IDX_MASK);
+		pio_clear(LED_PIO, LED_PIO_IDX_MASK);
+		delay_us(delay);
+		pio_clear(BUZ_PIO, BUZ_PIO_IDX_MASK);
+		pio_set(LED_PIO, LED_PIO_IDX_MASK);
+		delay_us(delay);
+		
+	}
+	
+	pio_clear(BUZ_PIO, BUZ_PIO_IDX_MASK);
+}
 
 /************************************************************************/
 /* Main                                                                 */
